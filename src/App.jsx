@@ -4,6 +4,7 @@ import { useDispatch, useSelector,} from "react-redux"
 import { setLoading,setUser} from './redux/reducers/authSlice'
 import Loader from "./ui/Loader"
 import { getCurrentUser } from "./api/services/accountApi"
+import router from './routes/router'
 
 function App() {
   const navigate = useNavigate();
