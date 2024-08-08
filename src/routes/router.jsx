@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import AppLayout from '../components/AppLayout'
+import RootLayout from '../pages/RootLayout';
 import ProtectedRoute from "../components/ProtectedRoute"
 import Error from '../pages/Error'
 import Home from '../pages/Home'
@@ -12,12 +12,14 @@ import AdminDashboard from '../pages/AdminDashboard'
 
 const router = createBrowserRouter([
     {
-      element:<AppLayout/>,
+      path:'/',
+      element:<RootLayout/>,
       errorElement:<Error/>,
   
       children: [
-        { path: '/', element: <Home/> },
-        { path: '/login',element: <Login/>},
+        { index:true, element: <Home/>},
+        { path:'/login', element: <Login/>},
+
         //shared routes
         {
           path:'/',
