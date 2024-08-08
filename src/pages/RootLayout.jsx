@@ -1,30 +1,27 @@
-import React, { useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
-import Navbar from '../components/Navbar'
-import { useCurrentUser } from '../hooks/useCurrentUser'
+import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Loader from './Loader';
 
-const RootLayout = () => {
-    const {user, error, isLoading} = useCurrentUser();
-    const navigate = useNavigate()
+const ProtectedRoute = ({ allowedRoles }) => {
+  const { currentUser, roles, isLoading } = useSelector((state) => state.auth);
+  console.log(currentUser)
 
-    useEffect(() => {
-        console.log(user);
-        if(user && user.roles.includes('Admin')){
-            return navigate('/admin')
-        }
+  if(isLoading){
+    return <Loader/>
+  }
 
-        
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
 
+  const hasRequiredRole = roles.some((role) => allowedRoles.includes(role));
 
-    },[isLoading,user,error])
+  if (!hasRequiredRole) {
+    return <Navigate to="/unauthorized" />;
+  }
 
+  return <Outlet />;
+};
 
-  return (
-    <>
-        <Navbar/>
-        <Outlet/>
-    </>
-  )
-}
-
-export default RootLayout
+export default ProtectedRoute;
